@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeBalance - Bankruptcy Prediction System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ SafeBalance</h1>
+            <p>Corporate Bankruptcy Risk Prediction System</p>
+            <span class="badge">XGBoost ML Model</span>
+        </div>
+
+        <div class="main-content">
+            <div class="card">
+                <h2>📈 Financial Data Input</h2>
+                <form id="predictionForm">
+                    <div class="form-grid">
+                        <div class="category-header">Company Information</div>
+                        
+                        <div class="form-group">
+                            <label>Fiscal Year (optional)</label>
+                            <input type="number" step="1" name="fyear" placeholder="e.g., 2020">
+                            <span class="feature-description">Year of financial data (auto-filled if left blank)</span>
+                        </div>
+
+                        <div class="category-header">Current Assets & Liquidity</div>
+                        
+                        <div class="form-group">
+                            <label>X1 - Current Assets
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X1" required placeholder="e.g., 511267">
+                            <span class="feature-description">Total current assets</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>X2 - Inventory
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X2" required placeholder="e.g., 740998">
+                            <span class="feature-description">Total inventory value</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>X3 - Quick Assets
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X3" required placeholder="e.g., 833107">
+                            <span class="feature-description">Liquid assets excluding inventory</span>
+                        </div>
+
+                        <div class="category-header">Current Liabilities</div>
+
+                        <div class="form-group">
+                            <label>X4 - Current Liabilities
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X4" required placeholder="e.g., 180447">
+                            <span class="feature-description">Short-term obligations</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>X5 - Accounts Payable
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X5" required placeholder="e.g., 18373">
+                            <span class="feature-description">Money owed to suppliers</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>X14 - Short Term Debt
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X14" required placeholder="e.g., 1024333">
+                            <span class="feature-description">Debt due within 1 year</span>
+                        </div>
+
+                        <div class="category-header">Profitability & Income</div>
+
+                        <div class="form-group">
+                            <label>X6 - Net Income
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X6" required placeholder="e.g., 70658">
+                            <span class="feature-description">Bottom line profit</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>X11 - EBIT
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X11" required placeholder="e.g., 35163">
+                            <span class="feature-description">Earnings before interest & taxes</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>X13 - Gross Profit
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X13" required placeholder="e.g., 128347">
+                            <span class="feature-description">Revenue minus cost of goods sold</span>
+                        </div>
+
+                        <div class="category-header">Assets & Equity</div>
+
+                        <div class="form-group">
+                            <label>X7 - Receivables
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X7" required placeholder="e.g., 89031">
+                            <span class="feature-description">Money owed by customers</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>X8 - Cash & Equivalents
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X8" required placeholder="e.g., 191226">
+                            <span class="feature-description">Liquid cash on hand</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>X9 - Stockholders Equity
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X9" required placeholder="e.g., 33601">
+                            <span class="feature-description">Owner's equity in company</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>X10 - Total Assets
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X10" required placeholder="e.g., 163816">
+                            <span class="feature-description">Sum of all assets</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>X12 - Retained Earnings
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X12" required placeholder="e.g., 201026">
+                            <span class="feature-description">Cumulative earnings</span>
+                        </div>
+
+                        <div class="category-header">Revenue & Debt</div>
+
+                        <div class="form-group">
+                            <label>X15 - Working Capital
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X15" required placeholder="e.g., 372751">
+                            <span class="feature-description">Current assets - current liabilities</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>X16 - Other Expenses
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X16" required placeholder="e.g., 401483">
+                            <span class="feature-description">Miscellaneous expenses</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>X17 - Total Revenue
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X17" required placeholder="e.g., 1024333">
+                            <span class="feature-description">Total sales revenue</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>X18 - Total Liabilities
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="number" step="any" name="X18" required placeholder="e.g., 935302">
+                            <span class="feature-description">Sum of all debts</span>
+                        </div>
+
+                        <div class="category-header">Company Classification</div>
+
+                        <div class="form-group">
+                            <label>Division
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <select name="Division" required>
+                                <option value="">Select Division</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                                <option value="G">G</option>
+                                <option value="H">H</option>
+                                <option value="I">I</option>
+                            </select>
+                            <span class="feature-description">Industry division</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Major Group
+                                <span style="color: var(--warning);">*</span>
+                            </label>
+                            <input type="text" name="MajorGroup" required placeholder="e.g., 37">
+                            <span class="feature-description">Industry classification code</span>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">🔮 Predict Bankruptcy Risk</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Clear Form</button>
+                        <button type="button" class="btn btn-secondary" onclick="loadSample()">📝 Load Sample Data</button>
+                    </div>
+                </form>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 15px; color: var(--text-secondary);">Analyzing financial data...</p>
+                </div>
+
+                <div id="result" style="display: none;"></div>
+            </div>
+
+            <div>
+                <div class="card">
+                    <h2>ℹ️ About the Model</h2>
+                    <div class="info-card">
+                        <h3>Model Performance</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">83.1%</div>
+                                <div class="stat-label">Accuracy</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">67.3%</div>
+                                <div class="stat-label">Recall (Failed)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>How It Works</h3>
+                        <ul>
+                            <li>XGBoost gradient boosting algorithm</li>
+                            <li>Trained on 62,782 companies</li>
+                            <li>9 engineered financial ratios</li>
+                            <li>Optimized threshold at 0.35</li>
+                            <li>Real-time risk assessment</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Key Features</h3>
+                        <ul>
+                            <li>Liquidity ratios (Current, Quick)</li>
+                            <li>Leverage & debt analysis</li>
+                            <li>Profitability margins</li>
+                            <li>Asset efficiency metrics</li>
+                            <li>Industry classification</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
