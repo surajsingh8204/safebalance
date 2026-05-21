@@ -7,7 +7,7 @@
 
 > **PLUTUS'25 Competition Entry** - An advanced machine learning web application for predicting corporate bankruptcy risk using financial intelligence.
 
-![SafeBalance Dashboard]([https://via.placeholder.com/1200x400/0f172a/3b82f6?text=SafeBalance+Dashboard](https://safebalance.onrender.com
+![SafeBalance Dashboard]((https://safebalance.onrender.com
 
 ))
 
